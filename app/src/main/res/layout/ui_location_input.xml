@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><!--
+  ~ Copyright (c)  2015-2016, Mohit Kanwal
+  -->
+
+<com.mohitkanwal.weatheroo.ui.LocationInputView xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	android:orientation="vertical">
+
+	<EditText
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginTop="24dp"
+		android:hint="@string/txt_enter_country_state" />
+</com.mohitkanwal.weatheroo.ui.LocationInputView>
