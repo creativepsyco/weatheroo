@@ -2,7 +2,7 @@
  * Copyright (c)  2015-2016, Mohit Kanwal
  */
 
-package com.mohitkanwal.weatheroo.ui;
+package com.mohitkanwal.weatheroo.ui.locationinput;
 
 import android.content.Context;
 import android.util.AttributeSet;

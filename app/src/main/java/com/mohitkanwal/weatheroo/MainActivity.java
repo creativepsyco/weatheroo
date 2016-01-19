@@ -20,7 +20,7 @@ import com.mohitkanwal.weatheroo.di.DaggerService;
 import com.mohitkanwal.weatheroo.di.PerActivity;
 import com.mohitkanwal.weatheroo.flow.HandlesBack;
 import com.mohitkanwal.weatheroo.mortar.GsonParceler;
-import com.mohitkanwal.weatheroo.ui.LocationInputScreen;
+import com.mohitkanwal.weatheroo.ui.locationinput.LocationInputScreen;
 
 import flow.Flow;
 import flow.FlowDelegate;
