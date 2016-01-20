@@ -7,6 +7,7 @@ package com.mohitkanwal.weatheroo;
 import android.app.Application;
 
 import com.mohitkanwal.weatheroo.di.DaggerService;
+import com.mohitkanwal.weatheroo.network.NetworkModule;
 
 import javax.inject.Inject;
 
@@ -29,6 +30,7 @@ public class WeatherooApp extends Application {
 
     ApplicationComponent component = DaggerApplicationComponent
         .builder()
+        .networkModule(new NetworkModule())
         .applicationModule(new ApplicationModule(this))
         .build();
     component.inject(this);

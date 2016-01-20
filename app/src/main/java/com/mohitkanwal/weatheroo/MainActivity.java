@@ -125,6 +125,13 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
   }
 
   @Override
+  public void onBackPressed() {
+    if (containerAsBackTarget.onBackPressed()) return;
+    if (flowSupport.onBackPressed()) return;
+    super.onBackPressed();
+  }
+
+  @Override
   protected void onResume() {
     super.onResume();
     flowSupport.onResume();

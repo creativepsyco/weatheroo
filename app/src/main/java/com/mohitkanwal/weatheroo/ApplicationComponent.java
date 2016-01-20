@@ -6,6 +6,9 @@ package com.mohitkanwal.weatheroo;
 
 import android.app.Application;
 
+import com.mohitkanwal.weatheroo.network.rest.WUAutoCompleteService;
+import com.mohitkanwal.weatheroo.network.rest.WUForecastService;
+
 import javax.inject.Singleton;
 
 import dagger.Component;
@@ -28,4 +31,8 @@ public interface ApplicationComponent {
   Application application();
 
   Timber.Tree provideTree();
+
+  WUAutoCompleteService autocompleteService();
+
+  WUForecastService forecastService();
 }
