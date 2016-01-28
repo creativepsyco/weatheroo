@@ -3,6 +3,8 @@ Weather Application
 
 [![Build Status](https://travis-ci.org/creativepsyco/weatheroo.svg?branch=master)](https://travis-ci.org/creativepsyco/weatheroo)
 [![Download latest](https://img.shields.io/badge/download-latest%20APK-green.svg)](./bin/app-debug.apk?raw=true)
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=mohitkanwal&url=https://github.com/creativepsyco/weatheroo&title=Weatheroo&language=Java&tags=github&category=software)
+
 
 A sample weather application that showcases use of some new libraries:
  * Flow
