@@ -4,19 +4,32 @@
 
 package com.mohitkanwal.weatheroo.ui.locationinput;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.mohitkanwal.weatheroo.MainActivity;
 import com.mohitkanwal.weatheroo.R;
 import com.mohitkanwal.weatheroo.di.DaggerScope;
 import com.mohitkanwal.weatheroo.di.DaggerService;
 import com.mohitkanwal.weatheroo.flow.Layout;
 import com.mohitkanwal.weatheroo.mortar.ScreenComponentFactory;
+import com.mohitkanwal.weatheroo.mortar.ScreenScope;
+import com.mohitkanwal.weatheroo.mortar.lifecycle.ActivityHelper;
+import com.mohitkanwal.weatheroo.mortar.lifecycle.LifecycleActionViewPresenter;
+import com.mohitkanwal.weatheroo.mortar.lifecycle.LifecycleOwner;
 import com.mohitkanwal.weatheroo.network.protocol.AQS2C;
 import com.mohitkanwal.weatheroo.network.rest.WUAutoCompleteService;
 import com.mohitkanwal.weatheroo.ui.home.WeatherooHomeScreen;
@@ -28,7 +41,6 @@ import javax.inject.Inject;
 
 import flow.Flow;
 import flow.path.Path;
-import mortar.ViewPresenter;
 import timber.log.Timber;
 
 /**
@@ -36,7 +48,7 @@ import timber.log.Timber;
  * Date: 19/1/16
  */
 @Layout(R.layout.ui_location_input)
-public class LocationInputScreen extends Path implements ScreenComponentFactory<MainActivity.Component> {
+public class LocationInputScreen extends Path implements ScreenComponentFactory<MainActivity.Component>, ScreenScope {
   @Override
   public Object createComponent(MainActivity.Component parent) {
     return DaggerLocationInputScreen_Component
@@ -44,6 +56,11 @@ public class LocationInputScreen extends Path implements ScreenComponentFactory<
         .module(new Module())
         .component(parent)
         .build();
+  }
+
+  @Override
+  public String getScopeName() {
+    return getClass().getSimpleName();
   }
 
   @DaggerScope(Component.class)
@@ -69,11 +86,15 @@ public class LocationInputScreen extends Path implements ScreenComponentFactory<
   }
 
   @DaggerScope(Component.class)
-  static class Presenter extends ViewPresenter<LocationInputView> {
+  static class Presenter extends LifecycleActionViewPresenter<LocationInputView> {
+
+    private static final int REQUEST_PLACE_PICKER = 0xbabe;
+
     private AutoCompleteAdapter mAdapter;
 
     @Inject
-    public Presenter() {
+    public Presenter(LifecycleOwner lifecycleOwner, ActivityHelper activityHelper) {
+      super(activityHelper, lifecycleOwner);
     }
 
     @Override
@@ -90,6 +111,44 @@ public class LocationInputScreen extends Path implements ScreenComponentFactory<
           Flow.get(view.getContext()).set(new WeatherooHomeScreen(lists));
         }
       });
+    }
+
+    /**
+     * Handles incoming action from the view for choosing image
+     */
+    public void dispatchChooseLocation() {
+      try {
+        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+        Intent intent = intentBuilder.build(getActivity());
+        // Start the Intent by requesting a result, identified by a request code.
+        getActivity().startActivityForResult(intent, REQUEST_PLACE_PICKER);
+
+      } catch (GooglePlayServicesRepairableException e) {
+        GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+      } catch (GooglePlayServicesNotAvailableException e) {
+        Snackbar.make(getView(), "Google Play Services is not available.", Snackbar.LENGTH_LONG)
+            .show();
+      }
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+      if (requestCode == REQUEST_PLACE_PICKER) {
+        if (resultCode == Activity.RESULT_OK) {
+          Snackbar.make(getView(), "Place successfully picked", Snackbar.LENGTH_SHORT).show();
+          Place place = PlacePicker.getPlace(getContext(), data);
+          getView().locationData.setText(place.getName()
+              + "\n"
+              + place.getAddress()
+              + "\n"
+              + place.getId()
+              + "\n"
+              + place.getLatLng().toString());
+        } else {
+          Snackbar.make(getView(), "Place not picked", Snackbar.LENGTH_SHORT).show();
+        }
+      }
     }
   }
 

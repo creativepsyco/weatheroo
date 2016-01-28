@@ -8,6 +8,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.mohitkanwal.weatheroo.R;
 import com.mohitkanwal.weatheroo.di.DaggerService;
@@ -16,6 +17,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * User: mohit
@@ -27,6 +29,9 @@ public class LocationInputView extends LinearLayout {
 
   @Bind(R.id.autoCompleteTextView)
   AutoCompleteTextView txtPlaceName;
+
+  @Bind(R.id.location_data)
+  TextView locationData;
 
   public LocationInputView(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -49,5 +54,10 @@ public class LocationInputView extends LinearLayout {
   protected void onDetachedFromWindow() {
     presenter.dropView(this);
     super.onDetachedFromWindow();
+  }
+
+  @OnClick(R.id.btn_choose_location)
+  public void onClickButton() {
+    presenter.dispatchChooseLocation();
   }
 }

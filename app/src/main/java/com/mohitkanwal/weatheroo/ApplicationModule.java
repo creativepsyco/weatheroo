@@ -7,7 +7,10 @@ package com.mohitkanwal.weatheroo;
 import android.app.Application;
 
 import com.mohitkanwal.weatheroo.logger.LoggerModule;
+import com.mohitkanwal.weatheroo.mortar.lifecycle.LifecycleOwner;
 import com.mohitkanwal.weatheroo.network.NetworkModule;
+
+import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
@@ -30,5 +33,11 @@ public class ApplicationModule {
   @Provides
   Application providesApplication() {
     return application;
+  }
+
+  @Provides
+  @Singleton
+  LifecycleOwner lifecycleOwner() {
+    return new LifecycleOwner();
   }
 }

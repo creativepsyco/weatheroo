@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +19,11 @@ import com.mohitkanwal.weatheroo.di.DaggerService;
 import com.mohitkanwal.weatheroo.di.PerActivity;
 import com.mohitkanwal.weatheroo.flow.HandlesBack;
 import com.mohitkanwal.weatheroo.mortar.GsonParceler;
+import com.mohitkanwal.weatheroo.mortar.lifecycle.LifecycleActivity;
+import com.mohitkanwal.weatheroo.mortar.lifecycle.LifecycleOwner;
 import com.mohitkanwal.weatheroo.ui.locationinput.LocationInputScreen;
+
+import javax.inject.Inject;
 
 import flow.Flow;
 import flow.FlowDelegate;
@@ -30,7 +33,10 @@ import mortar.MortarScope;
 import mortar.bundler.BundleServiceRunner;
 import timber.log.Timber;
 
-public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
+public class MainActivity extends LifecycleActivity implements Flow.Dispatcher {
+
+  @Inject
+  LifecycleOwner lifecycleOwner;
 
   private MortarScope activityScope;
 
@@ -101,6 +107,11 @@ public class MainActivity extends AppCompatActivity implements Flow.Dispatcher {
     // Inflate the menu; this adds items to the action bar if it is present.
     getMenuInflater().inflate(R.menu.menu_main, menu);
     return true;
+  }
+
+  @Override
+  public LifecycleOwner getLifecycleOwner() {
+    return lifecycleOwner;
   }
 
   @Override

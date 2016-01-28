@@ -6,6 +6,7 @@ package com.mohitkanwal.weatheroo;
 
 import android.app.Application;
 
+import com.mohitkanwal.weatheroo.mortar.lifecycle.LifecycleOwner;
 import com.mohitkanwal.weatheroo.network.rest.WUAutoCompleteService;
 import com.mohitkanwal.weatheroo.network.rest.WUForecastService;
 
@@ -29,6 +30,8 @@ public interface ApplicationComponent {
   void inject(WeatherooApp weatherooApp);
 
   Application application();
+
+  LifecycleOwner lifecycleOwner();
 
   Timber.Tree provideTree();
 
