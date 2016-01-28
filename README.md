@@ -1,6 +1,8 @@
 # weatheroo
 Weather Application
 
+[![Build Status](https://travis-ci.org/creativepsyco/weatheroo.svg?branch=master)](https://travis-ci.org/creativepsyco/weatheroo)
+
 A sample weather application that showcases use of some new libraries:
  * Flow
  * Mortar

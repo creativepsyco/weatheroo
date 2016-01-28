@@ -1,11 +1,24 @@
+#@IgnoreInspection BashAddShebang
 language: android
+env:
+  global:
+  - secure: GOzlxs+omcARKi4Y9/8/DDp6Wv6ETTYyI6zVgqiIJtq7jBDPVW7VVcEjfEsbGPRpSlFu/krkKYzeMPC0EOy11bhKge/Ei3YPo/dAutm17c9fAiDcOPL5pPz5PW3e7dSB/WRx1F0aMqHWif6Jg4wowX4+12ZDITJc7mJ223X5zBSUCBQe4yviVZC1cUuKSkXJQ9ZqhHubXDxHOG6kQJi9hAYcihk9X7mBuMojGtlLmgxdXzVx02O5YKj8+zFnIVSFwcxSIm20wRfWrsXkNFwjofL+uBgFTEty4xdqL5MYNjrP7GCgzQVnmSpgmP1tmrjXwCF1YJGLlXEgGx06xdjczAbzXUvb8gHGHiA14xKwM3991JVM0b5j/UEl9uM+XSpUPSe2wUhOyQkZBuSQFspiYiAabK2g9HOoUN3SUPB3BB4aZJ0jc7sQCORrnlU44LZZuEmvTgAkzUrWxYqMtaI/3ddmqk2tDhl7ewh8xpeumHSeJrk7cWSTf9lnAyUPLVW25tULBXPvO3OTSWr9d+cikmP40aqvlni9js8clEWVieZylcVKCqHXi93+DQ71dkASR/Buwaohz49mCeErS9AxbZ9Jb44gb2Y+cjBpEQIsa8vyPgMwDmVcGZlEKEBQ4QfyRQ8Y8HokiiLHbEczWgRVliLIIyQGAHmtqyPWBtUqeg4=
+  - secure: i2QP13DdAa0+jDjrBUmW4W/jSD/zXhhUbEdwXBGyr4usUieS81/z5juzSZXVhppobpgwdRcXd63HLbsz3kb2/zbCSEgOnbigeCTH4o5oFTrumU9Kp85KkLO5iq4ECvEHXFjvioCkwxfOkmKP5it8tMW+KjtMb52CZWL1KlRmdhvPc5z3bxOUxLVphF21vkuY8p3Qz9lY3q+5e1JOHBn35KzzC4QEgmBTZ6WkP76FlVbleLgGZYjZQDFACaqITRAP0jK101eu+6S34Q93AyV9/Jjsq/Q7DhTRxTv91SsjHkAwymMuacLbyyz9HymIHn+B04Fwe8bUSbgL9ZlNxWZkbfg9z1zJFJEhUDeWfSglilSNKGLKYKhTEgriu/aBWED7eGjdLq7H6nKj5RURhu6ws5TvB7CcJAuWyGAp2fVsb3B/S5PBpXRSN76v2SkGgdM4uDZulvFWeV1XCu8b+sKXwl9vnHNq+bR6woGf7vjB40LD8rMykYmXYJ4Cbjnqc+EqXBuJlnjZbZJ5hlVZruzOyzenNkQstGfWZaZayiEtcIaV+K23jU7wbQ6AWNIPXXUvP1vctDouWOYdpab59/CZ66KXoz+zEKhjkbLq9zK4NIPDLGPnsjWj01zpMYt5PQYxsJjfiIIFJVNcGK6ZRZq2ypqsf09ej8DE+59hGGbyg3U=
+
+cache:
+  directories:
+  - ${TRAVIS_BUILD_DIR}/gradle/caches/
+  - ${TRAVIS_BUILD_DIR}/gradle/wrapper/dists/
+  - $HOME/.gradle/caches/
+  - $HOME/.gradle/wrapper/
+
 android:
   components:
-    - platform-tools
-    - build-tools-23.0.3
-    - android-23
-    - extra-android-m2repository
-    - extra-google-m2repository
-
+  - tools
+  - platform-tools
+  - build-tools-23.0.2
+  - android-23
+  - extra-android-m2repository
+  - extra-google-m2repository
 script:
-   - ./gradlew assemble
+- "./gradlew assemble"

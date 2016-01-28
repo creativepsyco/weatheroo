@@ -5,6 +5,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 
+def LOCAL_WUNDERGROUND_API_KEY = hasProperty("WUNDERGROUND_API_KEY") ? getProperty("WUNDERGROUND_API_KEY") : "YOUR_NOT_SO_SECURE_API_KEY"
+def LOCAL_WEATHEROO_PLACES_API_KEY = hasProperty("WEATHEROO_PLACES_API_KEY") ? getProperty("WEATHEROO_PLACES_API_KEY") : "YOUR_NOT_SO_SECURE_API_KEY"
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -15,9 +18,9 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0-SNAPSHOT"
-        buildConfigField "String", "WUNDERGROUND_API_KEY", "\"${WUNDERGROUND_API_KEY}\""
-        buildConfigField "String", "GOOGLE_PLACES_API_KEY", "\"${WEATHEROO_PLACES_API_KEY}\""
-        manifestPlaceholders = [GOOGLE_PLACES_API_KEY: "${WEATHEROO_PLACES_API_KEY}"]
+        buildConfigField "String", "WUNDERGROUND_API_KEY", "\"${LOCAL_WUNDERGROUND_API_KEY}\""
+        buildConfigField "String", "GOOGLE_PLACES_API_KEY", "\"${LOCAL_WEATHEROO_PLACES_API_KEY}\""
+        manifestPlaceholders = [GOOGLE_PLACES_API_KEY: "${LOCAL_WEATHEROO_PLACES_API_KEY}"]
     }
     dexOptions {
         // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
