@@ -4,12 +4,18 @@
 
 package com.mohitkanwal.weatheroo.ui.locationinput;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +96,8 @@ public class LocationInputScreen extends Path implements ScreenComponentFactory<
 
     private static final int REQUEST_PLACE_PICKER = 0xbabe;
 
+    private static final int REQUEST_PERMISSION_CODE = 0xab;
+
     private AutoCompleteAdapter mAdapter;
 
     @Inject
@@ -113,21 +121,73 @@ public class LocationInputScreen extends Path implements ScreenComponentFactory<
       });
     }
 
+    private boolean isPermissionReqRequired(boolean showDialog) {
+      Activity thisActivity = getActivity();
+      boolean doesNotHavePermissions = ContextCompat.checkSelfPermission(thisActivity,
+          Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+
+      if (doesNotHavePermissions) {
+        // Should we show an explanation?
+        if (ActivityCompat.shouldShowRequestPermissionRationale(thisActivity, Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+          // Show an expanation to the user *asynchronously* -- don't block
+          // this thread waiting for the user's response! After the user
+          // sees the explanation, try again to request the permission.
+          if (showDialog) {
+            AlertDialog dialog = new AlertDialog.Builder(getContext())
+                .setTitle(R.string.read_location)
+                .setMessage(R.string.read_location_rationale)
+                .setPositiveButton(R.string.common_text_got_it, new DialogInterface.OnClickListener() {
+                  @Override
+                  public void onClick(DialogInterface dialog, int which) {
+                    isPermissionReqRequired(false);
+                  }
+                }).create();
+            dialog.show();
+          } else {
+            ActivityCompat.requestPermissions(thisActivity,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_PERMISSION_CODE);
+          }
+        } else {
+          // No explanation needed, we can request the permission.
+          ActivityCompat.requestPermissions(thisActivity,
+              new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+              REQUEST_PERMISSION_CODE);
+
+        }
+      }
+      return doesNotHavePermissions;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+      switch (requestCode) {
+        case REQUEST_PERMISSION_CODE:
+          if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            dispatchChooseLocation();
+          }
+          break;
+      }
+    }
+
     /**
      * Handles incoming action from the view for choosing image
      */
     public void dispatchChooseLocation() {
-      try {
-        PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
-        Intent intent = intentBuilder.build(getActivity());
-        // Start the Intent by requesting a result, identified by a request code.
-        getActivity().startActivityForResult(intent, REQUEST_PLACE_PICKER);
+      if (!isPermissionReqRequired(true)) {
+        try {
+          PlacePicker.IntentBuilder intentBuilder = new PlacePicker.IntentBuilder();
+          Intent intent = intentBuilder.build(getActivity());
+          // Start the Intent by requesting a result, identified by a request code.
+          getActivity().startActivityForResult(intent, REQUEST_PLACE_PICKER);
 
-      } catch (GooglePlayServicesRepairableException e) {
-        GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
-      } catch (GooglePlayServicesNotAvailableException e) {
-        Snackbar.make(getView(), "Google Play Services is not available.", Snackbar.LENGTH_LONG)
-            .show();
+        } catch (GooglePlayServicesRepairableException e) {
+          GooglePlayServicesUtil.getErrorDialog(e.getConnectionStatusCode(), getActivity(), 0);
+        } catch (GooglePlayServicesNotAvailableException e) {
+          Snackbar.make(getView(), "Google Play Services is not available.", Snackbar.LENGTH_LONG)
+              .show();
+        }
       }
     }
 

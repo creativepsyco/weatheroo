@@ -7,4 +7,7 @@
 	<string name="action_settings">Settings</string>
 	<string name="txt_enter_country_state">Enter country/state</string>
 	<string name="txt_choose_image">Choose location (Using Google Place Picker)</string>
+	<string name="read_location">Get Location</string>
+	<string name="read_location_rationale">The app needs to access your location to be able to get location from Google Places Picker API</string>
+	<string name="common_text_got_it">Got it</string>
 </resources>
