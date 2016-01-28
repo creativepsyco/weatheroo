@@ -2,6 +2,7 @@
 Weather Application
 
 [![Build Status](https://travis-ci.org/creativepsyco/weatheroo.svg?branch=master)](https://travis-ci.org/creativepsyco/weatheroo)
+[![Download latest](https://img.shields.io/badge/download-latest%20APK-green.svg)](./bin/app-debug.apk)
 
 A sample weather application that showcases use of some new libraries:
  * Flow
